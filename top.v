@@ -21,9 +21,11 @@
 module top(
 input wire clk,
 input switch,
+input button,
 output wire [3:0] anode,
 output wire [7:0] cathode
     );
+	 
 	 
 wire refresh_clk;
 wire counter_clk_signal;
@@ -33,12 +35,13 @@ wire [13:0] bin;
 wire [15:0] bcd;
 wire [3:0] digit;
 
-clock_divider #(24999) refreah_clk_generator(clk, refresh_clk); // 1kHz clk  1/2 khz on/off
-clock_divider #(3999999) counter_clk_generator(clk, counter_clk_signal); // 25 Hz clk 12.5 hz on/off
+clock_divider #(24999) refreah_clk_generator(clk, refresh_clk); // 1kHz clk 
+clock_divider #(2499999) counter_clk_generator(clk, counter_clk_signal); // 10 Hz  div = [f_clk/(f_desired*2)] - 1
 
 counter_14bit counter_14bit_uut (
 .counter_clk_signal(counter_clk_signal),
 .switch(switch),
+.button(button),
 .counter(bin)			
  );
 
